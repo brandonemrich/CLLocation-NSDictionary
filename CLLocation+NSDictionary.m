@@ -6,6 +6,7 @@
 //
 
 #import "CLLocation+NSDictionary.h"
+#import <Foundation/NSJSONSerialization.h>
 
 @implementation CLLocation (NSDictionary)
 
@@ -56,7 +57,12 @@
 }
 
 - (id)initWithJSON:(NSString*)json {
-    NSDictionary *dict = [json objectFromJSONString];
+    NSError* error;
+    NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:NSJSONReadingAllowFragments
+                                                            error:&error];
+    
     return [self initWithDictionary:dict];
 }
 
@@ -82,7 +88,13 @@
 
 - (NSString*) JSONString {
     NSDictionary *dict = [self dictionaryRepresentation];
-    return [dict JSONString];
+    NSError* error;
+    NSData *dataFromDict = [NSJSONSerialization dataWithJSONObject:dict
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:&error];
+    
+    return [[NSString alloc] initWithData:dataFromDict encoding:NSUTF8StringEncoding];
+
 }
 
 @end
