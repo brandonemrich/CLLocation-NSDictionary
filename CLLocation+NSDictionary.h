@@ -12,6 +12,7 @@
 @interface CLLocation (NSDictionary)
 
 - (id)initWithDictionary:(NSDictionary*)dictRep;
+- (id)initWithJSON:(NSString*)json;
 - (NSDictionary*)dictionaryRepresentation;
 - (NSString*) JSONString;
 
